@@ -3,46 +3,47 @@
 public class CameraController : MonoBehaviour
 {
     [Header("Cài đặt Mục tiêu")]
-    public Transform target; // Vị trí nhân vật để camera nhìn theo
-    public Vector3 offset = new Vector3(0f, 1.5f, 0f); // Nâng tâm nhìn lên cao một chút (ngang tầm ngực/đầu nhân vật)
+    public Transform target;
+    public Vector3 targetOffset = new Vector3(0f, 1.5f, 0f); // Điểm Camera luôn nhìn vào (Ngang vai/cổ)
 
-    [Header("Cài đặt Camera")]
-    public float distance = 4.0f; // Khoảng cách từ camera đến nhân vật
-    public float mouseSensitivity = 3.0f; // Độ nhạy của chuột
-    public float yMinLimit = -15f; // Giới hạn góc nhìn chúc xuống (tránh nhìn xuyên đất)
-    public float yMaxLimit = 70f; // Giới hạn góc nhìn ngẩng lên
+    [Header("Góc nhìn Điện ảnh (Wuthering Waves)")]
+    public float distance = 4.5f; // Khoảng cách xa ra sau lưng
+    public float minDistance = 1.5f; // Zoom in gần nhất
+    public float maxDistance = 10f; // Zoom out xa nhất
+
+    [Header("Cài đặt Chuột")]
+    public float mouseSensitivity = 3.0f;
+    public float yMinLimit = -15f; // Góc ngước lên trời tối đa
+    public float yMaxLimit = 60f; // Góc cúi xuống đất tối đa
 
     private float currentX = 0.0f;
-    private float currentY = 0.0f;
+    private float currentY = 15.0f; // MỚI: Mặc định lúc vào game camera sẽ hơi cúi nhẹ xuống
 
     void Start()
     {
-        // Khóa con trỏ chuột vào giữa màn hình và ẩn nó đi để chơi game
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    // Dùng LateUpdate thay vì Update để đảm bảo Camera di chuyển SAU KHI nhân vật đã di chuyển xong (giúp camera không bị giật)
     void LateUpdate()
     {
         if (target == null) return;
 
-        // Lấy thông tin khi bạn di chuyển chuột
+        // 1. Lấy tín hiệu xoay chuột
         currentX += Input.GetAxis("Mouse X") * mouseSensitivity;
         currentY -= Input.GetAxis("Mouse Y") * mouseSensitivity;
-
-        // Giới hạn góc Y (lên/xuống) để camera không bị lật ngược vòng tròn
         currentY = Mathf.Clamp(currentY, yMinLimit, yMaxLimit);
 
-        // Tính toán góc xoay
+        // 2. Tính năng Zoom bằng con lăn chuột (Cuộn lên/xuống)
+        distance -= Input.GetAxis("Mouse ScrollWheel") * 2f;
+        distance = Mathf.Clamp(distance, minDistance, maxDistance);
+
+        // 3. Tính toán vị trí tâm xoay (Cổ nhân vật)
+        Vector3 pivotPosition = target.position + targetOffset;
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
 
-        // Tính toán vị trí của camera lùi lại phía sau nhân vật
-        Vector3 direction = new Vector3(0, 0, -distance);
-        Vector3 targetPosition = target.position + offset; // Vị trí nhân vật cộng thêm chiều cao
-
-        // Áp dụng vị trí và góc xoay cho Camera
-        transform.position = targetPosition + rotation * direction;
-        transform.LookAt(targetPosition);
+        // 4. Di chuyển camera lùi ra sau và ép nhìn thẳng vào tâm
+        transform.position = pivotPosition + rotation * new Vector3(0, 0, -distance);
+        transform.LookAt(pivotPosition);
     }
 }
