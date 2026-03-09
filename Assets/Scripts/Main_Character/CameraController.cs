@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
 
     [Header("Góc nhìn Điện ảnh (Wuthering Waves)")]
     public float distance = 4.5f; // Khoảng cách xa ra sau lưng
-    public float minDistance = 1.5f; // Zoom in gần nhất
+    public float minDistance = 0.5f; // Zoom in gần nhất
     public float maxDistance = 10f; // Zoom out xa nhất
 
     [Header("Cài đặt Chuột")]

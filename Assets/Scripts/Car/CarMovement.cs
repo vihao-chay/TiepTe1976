@@ -43,6 +43,9 @@ public class CarMovement : MonoBehaviour
     // Cờ đánh dấu để sửa triệt để lỗi "nhớ nhầm"
     private bool wasPlayerInCar = false;
 
+    // --- KHÓA ĐIỀU KHIỂN KHI BỊ TRAP ---
+    private bool canControl = true;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -69,8 +72,8 @@ public class CarMovement : MonoBehaviour
     // --- HÀM BẢO VỆ 1: XỬ LÝ KHI LÊN XE ---
     private void KichHoatLenXe()
     {
-        if (wasPlayerInCar) return; // Tránh chạy lặp lại
-        wasPlayerInCar = true;      // Ghi nhớ là đã lên xe
+        if (wasPlayerInCar) return;
+        wasPlayerInCar = true;
         hasStartedMoving = false;
 
         if (startEngineSource != null && startEngineClip != null && engineVolume > 0)
@@ -86,8 +89,8 @@ public class CarMovement : MonoBehaviour
     // --- HÀM BẢO VỆ 2: XỬ LÝ KHI XUỐNG XE ---
     private void KichHoatXuongXe()
     {
-        if (!wasPlayerInCar) return; // Tránh chạy lặp lại
-        wasPlayerInCar = false;      // Ghi nhớ là đã xuống xe (Rất quan trọng!)
+        if (!wasPlayerInCar) return;
+        wasPlayerInCar = false;
 
         if (startEngineSource != null) startEngineSource.Stop();
         if (rollingSource != null) rollingSource.Stop();
@@ -96,14 +99,12 @@ public class CarMovement : MonoBehaviour
         isMusicPlaying = false;
         if (radioUI != null) radioUI.SetActive(false);
 
-        // Phát tiếng đóng cửa bằng một Loa ảo độc lập (kể cả code này bị tắt thì tiếng vẫn vang lên)
         if (doorCloseClip != null && doorCloseVolume > 0f)
         {
             AudioSource.PlayClipAtPoint(doorCloseClip, transform.position, doorCloseVolume);
         }
     }
 
-    // Bắt sự kiện khi code bị bật/tắt đột ngột bởi Script khác
     void OnEnable()
     {
         if (carCamera != null && carCamera.gameObject.activeInHierarchy) KichHoatLenXe();
@@ -122,15 +123,20 @@ public class CarMovement : MonoBehaviour
 
         bool isPlayerInCar = carCamera != null && carCamera.gameObject.activeInHierarchy;
 
-        // Tự động kiểm tra liên tục xem có ngồi trên xe không
         if (isPlayerInCar) KichHoatLenXe();
         else KichHoatXuongXe();
 
         if (isPlayerInCar && Input.GetKeyDown(KeyCode.H))
         {
             isMusicPlaying = !isMusicPlaying;
-            if (isMusicPlaying) { if (musicSource != null && musicClip != null) musicSource.Play(); }
-            else { if (musicSource != null) musicSource.Pause(); }
+            if (isMusicPlaying)
+            {
+                if (musicSource != null && musicClip != null) musicSource.Play();
+            }
+            else
+            {
+                if (musicSource != null) musicSource.Pause();
+            }
             UpdateRadioText();
         }
     }
@@ -147,6 +153,9 @@ public class CarMovement : MonoBehaviour
     void FixedUpdate()
     {
         if (carCamera == null || !carCamera.gameObject.activeInHierarchy) return;
+
+        // --- CHẶN ĐIỀU KHIỂN KHI BỊ TRAP ---
+        if (!canControl) return;
 
         float vertical = Input.GetAxis("Vertical");
         float horizontal = Input.GetAxis("Horizontal");
@@ -202,5 +211,17 @@ public class CarMovement : MonoBehaviour
                 startEngineSource.PlayOneShot(crashClip, crashVolume);
             }
         }
+    }
+
+    // --- HÀM KHÓA ĐIỀU KHIỂN KHI TRÚNG TRAP ---
+    public void DisableControl(float time)
+    {
+        canControl = false;
+        Invoke(nameof(EnableControl), time);
+    }
+
+    void EnableControl()
+    {
+        canControl = true;
     }
 }
