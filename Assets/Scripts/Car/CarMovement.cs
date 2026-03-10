@@ -10,7 +10,15 @@ public class CarMovement : MonoBehaviour
     [Header("Camera Cố Định")]
     public Transform carCamera;
 
-    [Header("Âm thanh & Âm lượng (Kéo thanh trượt để chỉnh)")]
+    [Header("Tính năng Checkpoint (MỚI)")]
+    public float resetCooldown = 5f;   // Nút R mất 5 giây để làm lạnh
+    private float nextResetTime = 0f;
+
+    // Tọa độ và Góc quay của Checkpoint hiện tại
+    private Vector3 checkpointPosition;
+    private Quaternion checkpointRotation;
+
+    [Header("Âm thanh & Âm lượng")]
     public AudioClip startEngineClip;
     [Range(0f, 1f)] public float engineVolume = 1f;
 
@@ -26,9 +34,12 @@ public class CarMovement : MonoBehaviour
     public AudioClip musicClip;
     [Range(0f, 1f)] public float musicVolume = 0.4f;
 
-    [Header("Giao diện Radio")]
-    public GameObject radioUI;
+    [Header("Giao diện UI")]
+    public GameObject radioUI_Parent;
     public TextMeshProUGUI radioText;
+
+    public GameObject rewindUI_Parent;
+    public TextMeshProUGUI rewindText;
 
     public Vector3 centerOfMassOffset = new Vector3(0f, -1f, 0f);
     private Rigidbody rb;
@@ -39,8 +50,6 @@ public class CarMovement : MonoBehaviour
 
     private bool hasStartedMoving = false;
     private bool isMusicPlaying = false;
-
-    // Cờ đánh dấu để sửa triệt để lỗi "nhớ nhầm"
     private bool wasPlayerInCar = false;
 
     // --- KHÓA ĐIỀU KHIỂN KHI BỊ TRAP ---
@@ -66,10 +75,10 @@ public class CarMovement : MonoBehaviour
         musicSource.clip = musicClip;
         musicSource.spatialBlend = 0f;
 
-        if (radioUI != null) radioUI.SetActive(false);
+        if (radioUI_Parent != null) radioUI_Parent.SetActive(false);
+        if (rewindUI_Parent != null) rewindUI_Parent.SetActive(false);
     }
 
-    // --- HÀM BẢO VỆ 1: XỬ LÝ KHI LÊN XE ---
     private void KichHoatLenXe()
     {
         if (wasPlayerInCar) return;
@@ -82,11 +91,16 @@ public class CarMovement : MonoBehaviour
             startEngineSource.PlayOneShot(startEngineClip);
         }
 
-        if (radioUI != null) radioUI.SetActive(true);
+        if (radioUI_Parent != null) radioUI_Parent.SetActive(true);
+        if (rewindUI_Parent != null) rewindUI_Parent.SetActive(true);
+
+        // MỚI: LƯU CHECKPOINT NGAY LÚC BƯỚC LÊN XE
+        checkpointPosition = transform.position;
+        checkpointRotation = transform.rotation;
+
         UpdateRadioText();
     }
 
-    // --- HÀM BẢO VỆ 2: XỬ LÝ KHI XUỐNG XE ---
     private void KichHoatXuongXe()
     {
         if (!wasPlayerInCar) return;
@@ -97,7 +111,8 @@ public class CarMovement : MonoBehaviour
         if (musicSource != null) musicSource.Stop();
 
         isMusicPlaying = false;
-        if (radioUI != null) radioUI.SetActive(false);
+        if (radioUI_Parent != null) radioUI_Parent.SetActive(false);
+        if (rewindUI_Parent != null) rewindUI_Parent.SetActive(false);
 
         if (doorCloseClip != null && doorCloseVolume > 0f)
         {
@@ -126,18 +141,40 @@ public class CarMovement : MonoBehaviour
         if (isPlayerInCar) KichHoatLenXe();
         else KichHoatXuongXe();
 
-        if (isPlayerInCar && Input.GetKeyDown(KeyCode.H))
+        if (isPlayerInCar)
         {
-            isMusicPlaying = !isMusicPlaying;
-            if (isMusicPlaying)
+            // BẬT / TẮT RADIO (Phím H)
+            if (Input.GetKeyDown(KeyCode.H))
             {
-                if (musicSource != null && musicClip != null) musicSource.Play();
+                isMusicPlaying = !isMusicPlaying;
+                if (isMusicPlaying)
+                {
+                    if (musicSource != null && musicClip != null) musicSource.Play();
+                }
+                else
+                {
+                    if (musicSource != null) musicSource.Pause();
+                }
+                UpdateRadioText();
             }
-            else
+
+            // MỚI: QUAY VỀ CHECKPOINT (Phím R)
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                if (musicSource != null) musicSource.Pause();
+                if (Time.time >= nextResetTime)
+                {
+                    // Đưa xe về tọa độ Checkpoint, nhấc bổng lên 2 mét để rơi xuống an toàn
+                    rb.position = checkpointPosition + new Vector3(0, 2f, 0);
+                    rb.rotation = Quaternion.Euler(0f, checkpointRotation.eulerAngles.y, 0f);
+
+                    // Phanh khẩn cấp xóa quán tính rơi
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+
+                    // Khởi động thời gian làm lạnh
+                    nextResetTime = Time.time + resetCooldown;
+                }
             }
-            UpdateRadioText();
         }
     }
 
@@ -154,7 +191,20 @@ public class CarMovement : MonoBehaviour
     {
         if (carCamera == null || !carCamera.gameObject.activeInHierarchy) return;
 
-        // --- CHẶN ĐIỀU KHIỂN KHI BỊ TRAP ---
+        // CẬP NHẬT CHỮ CHECKPOINT
+        if (rewindText != null)
+        {
+            if (Time.time < nextResetTime)
+            {
+                int timeLeft = Mathf.CeilToInt(nextResetTime - Time.time);
+                rewindText.text = "Nhấn [R]: Đang hồi (" + timeLeft + "s)";
+            }
+            else
+            {
+                rewindText.text = "Nhấn [R]: Quay lại";
+            }
+        }
+
         if (!canControl) return;
 
         float vertical = Input.GetAxis("Vertical");
@@ -213,7 +263,6 @@ public class CarMovement : MonoBehaviour
         }
     }
 
-    // --- HÀM KHÓA ĐIỀU KHIỂN KHI TRÚNG TRAP ---
     public void DisableControl(float time)
     {
         canControl = false;
@@ -223,5 +272,13 @@ public class CarMovement : MonoBehaviour
     void EnableControl()
     {
         canControl = true;
+    }
+
+    // --- HÀM MỞ CHO CÁC TRẠM CHECKPOINT TRÊN ĐƯỜNG GỌI VÀO ---
+    public void LuuCheckpointMoi(Vector3 toaDoMoi, Quaternion gocQuayMoi)
+    {
+        checkpointPosition = toaDoMoi;
+        checkpointRotation = gocQuayMoi;
+        Debug.Log("Đã lưu Checkpoint mới trên đường đua!");
     }
 }
