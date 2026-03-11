@@ -68,12 +68,11 @@ public class MissionTimer : MonoBehaviour
     void HetGio()
     {
         Debug.Log("HẾT GIỜ! Nhiệm vụ thất bại.");
-        if (timerText != null)
+        GameOutro outro = FindFirstObjectByType<GameOutro>();
+        if (outro != null)
         {
-            timerText.text = "HẾT GIỜ!";
-            timerText.color = Color.red; // Đổi sang màu đỏ cảnh báo
+            // Đổi TriggerOutro thành StartFinalExit
+            outro.StartFinalExit("NHIỆM VỤ THẤT BẠI!\nBẠN ĐÃ HẾT THỜI GIAN.");
         }
-
-        // Đoạn này sau này chúng ta sẽ viết code Màn hình Đen - Thất Bại
     }
 }

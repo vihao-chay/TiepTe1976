@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+// Tự động thêm AudioSource vào nút nếu chưa có
+[RequireComponent(typeof(AudioSource))]
 public class ButtonClickBG : MonoBehaviour,
     IPointerEnterHandler, IPointerExitHandler,
     IPointerDownHandler, IPointerUpHandler
@@ -9,26 +11,41 @@ public class ButtonClickBG : MonoBehaviour,
     [Header("BG References")]
     public Image bgPressed;
 
+    [Header("Âm thanh UI")]
+    public AudioClip hoverSound; // Kéo file âm thanh lúc rê chuột vào đây
+    public AudioClip clickSound; // Kéo file âm thanh lúc bấm chuột vào đây
+    private AudioSource audioSource;
+
     private Vector3 hoverScale = Vector3.one;
     private Vector3 pressedScale = Vector3.one * 1.2f;
     private bool isHovered = false;
-    private bool isPressed = false;  // 🔥 THÊM NÀY!
+    private bool isPressed = false;
 
     void Start()
     {
         if (bgPressed != null)
         {
-            bgPressed.gameObject.SetActive(false);
+            bgPressed.enabled = false;
         }
+
+        // Lấy cái loa (AudioSource) trên nút để chuẩn bị phát nhạc
+        audioSource = GetComponent<AudioSource>();
+        audioSource.playOnAwake = false; // Tắt tự động phát khi mới mở game
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         isHovered = true;
         if (bgPressed != null && !isPressed)
-        {  // 🔥 Chỉ hiện nếu KHÔNG đang nhấn
-            bgPressed.gameObject.SetActive(true);
-            bgPressed.transform.localScale = hoverScale;
+        {
+            bgPressed.enabled = true;
+            transform.localScale = hoverScale;
+        }
+
+        // PHÁT ÂM THANH HOVER
+        if (hoverSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(hoverSound);
         }
     }
 
@@ -37,29 +54,33 @@ public class ButtonClickBG : MonoBehaviour,
         isHovered = false;
         if (bgPressed != null)
         {
-            // 🔥 LUÔN ẨN khi hover ra, BẤT KỂ đang nhấn hay không
-            bgPressed.gameObject.SetActive(false);
+            bgPressed.enabled = false;
+            transform.localScale = hoverScale;
         }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        isPressed = true;  // 🔥 Track trạng thái nhấn
-
+        isPressed = true;
         if (bgPressed != null && isHovered)
         {
-            bgPressed.gameObject.SetActive(true);  // Đảm bảo hiện
-            bgPressed.transform.localScale = pressedScale;
+            bgPressed.enabled = true;
+            transform.localScale = pressedScale;
+        }
+
+        // PHÁT ÂM THANH CLICK
+        if (clickSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clickSound);
         }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        isPressed = false;  // 🔥 Reset
-
+        isPressed = false;
         if (bgPressed != null && isHovered)
         {
-            bgPressed.transform.localScale = hoverScale;  // Về hover size
+            transform.localScale = hoverScale;
         }
     }
 }
