@@ -6,6 +6,9 @@ public class CarInteract : MonoBehaviour
     public GameObject pressFText; // Chữ "Ấn F để lên xe"
     public GameObject pressGText; // Chữ "Ấn G để xuống xe"
 
+    // MỚI 1: Thêm biến để chứa toàn bộ cụm nút lái xe
+    public GameObject drivingUI_Group;
+
     [Header("Nhân Vật & Điểm Xuống")]
     public GameObject player;
     public Transform exitPoint;
@@ -25,6 +28,9 @@ public class CarInteract : MonoBehaviour
 
         if (pressFText != null) pressFText.SetActive(false);
         if (pressGText != null) pressGText.SetActive(false);
+
+        // MỚI 2: Đảm bảo giấu cụm nút R, H, G đi lúc mới vào game
+        if (drivingUI_Group != null) drivingUI_Group.SetActive(false);
     }
 
     void Update()
@@ -48,6 +54,9 @@ public class CarInteract : MonoBehaviour
         if (pressFText != null) pressFText.SetActive(false);
         if (pressGText != null) pressGText.SetActive(true);
 
+        // MỚI 3: Bật cụm nút lái xe lên khi chui vào buồng lái
+        if (drivingUI_Group != null) drivingUI_Group.SetActive(true);
+
         // 1. Tàng hình nhân vật chính & tắt camera người
         player.SetActive(false);
         playerCamera.SetActive(false);
@@ -61,6 +70,9 @@ public class CarInteract : MonoBehaviour
     {
         isDriving = false;
         if (pressGText != null) pressGText.SetActive(false);
+
+        // MỚI 4: Giấu cụm nút lái xe đi khi bước xuống đất
+        if (drivingUI_Group != null) drivingUI_Group.SetActive(false);
 
         // 1. Dịch chuyển người chơi ra cửa xe và hiện lại
         player.transform.position = exitPoint.position;

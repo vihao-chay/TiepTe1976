@@ -33,6 +33,10 @@ public class GameOutro : MonoBehaviour
     {
         outroText.text = message;
 
+        // 🚨 THÊM 2 DÒNG NÀY: Phải đánh thức Panel và Chữ dậy trước khi làm mờ!
+        outroCanvasGroup.gameObject.SetActive(true);
+        outroText.gameObject.SetActive(true);
+
         // Mờ dần màn hình cho đến đen kịt
         while (outroCanvasGroup.alpha < 1)
         {

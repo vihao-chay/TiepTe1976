@@ -153,8 +153,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.000015258789, y: -295.6148}
-  m_SizeDelta: {x: 1013.858, y: 357.401}
+  m_AnchoredPosition: {x: 0, y: -415.77}
+  m_SizeDelta: {x: 1399.033, y: 357.401}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &252490059
 MonoBehaviour:
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Ti\u1EBFp t\u1EBF 1976\n"
+  m_text: "Chuy\u1EBFn Xe H\u1EADu C\u1EA7n 1976\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -185,8 +185,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294111986
-  m_fontColor: {r: 0.9490196, g: 0.9490196, b: 0.9490196, a: 1}
+    rgba: 4280872435
+  m_fontColor: {r: 0.9547169, g: 0.92889994, b: 0.15671764, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -294,7 +294,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000011444092, y: -34.03851}
+  m_AnchoredPosition: {x: -0.000011444092, y: -75.085}
   m_SizeDelta: {x: 817.645, y: 68.077}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &409950509
@@ -793,8 +793,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.0000038146973, y: -176.99332}
-  m_SizeDelta: {x: 704.724, y: 120.15802}
+  m_AnchoredPosition: {x: 0.000023841858, y: -297.15005}
+  m_SizeDelta: {x: 1376, y: 179.213}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1535057154
 MonoBehaviour:

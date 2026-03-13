@@ -27,6 +27,9 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
+        // 🚨 THÊM DÒNG NÀY: Ngăn camera quay khi game đang tạm dừng (Time.timeScale == 0)
+        if (Time.timeScale == 0f) return;
+
         if (target == null) return;
 
         // 1. Lấy tín hiệu xoay chuột

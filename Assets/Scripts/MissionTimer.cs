@@ -4,6 +4,7 @@ using TMPro;
 public class MissionTimer : MonoBehaviour
 {
     [Header("Giao diện Đồng Hồ")]
+    public GameObject timerBackground; // Kéo TimerBackground vào đây
     public TextMeshProUGUI timerText;
 
     [Header("Thời gian nhiệm vụ (Tính bằng giây)")]
@@ -14,11 +15,11 @@ public class MissionTimer : MonoBehaviour
 
     void Start()
     {
-        // Ghi nhớ thời gian và giấu đồng hồ đi lúc mới vào game (chưa nhận nhiệm vụ)
         timeRemaining = totalMissionTime;
         UpdateTimerUI();
 
-        if (timerText != null) timerText.gameObject.SetActive(false);
+        // Giấu cả cụm nền đen và chữ đi lúc mới vào game
+        if (timerBackground != null) timerBackground.SetActive(false);
     }
 
     void Update()
@@ -27,12 +28,11 @@ public class MissionTimer : MonoBehaviour
         {
             if (timeRemaining > 0)
             {
-                timeRemaining -= Time.deltaTime; // Trừ dần thời gian thực
+                timeRemaining -= Time.deltaTime;
                 UpdateTimerUI();
             }
             else
             {
-                // KHI THỜI GIAN VỀ 0
                 timeRemaining = 0;
                 isTimerRunning = false;
                 UpdateTimerUI();
@@ -41,14 +41,14 @@ public class MissionTimer : MonoBehaviour
         }
     }
 
-    // --- HÀM MỞ KHÓA: NÚT "ACCEPT" SẼ GỌI VÀO ĐÂY ---
+    // --- HÀM ĐƯỢC GỌI KHI BẤM NÚT ACCEPT CỦA NPC ---
     public void StartMissionTimer()
     {
         isTimerRunning = true;
-        if (timerText != null) timerText.gameObject.SetActive(true); // Bật hiện đồng hồ lên
+        // Bật hiển thị cả cụm đồng hồ lên
+        if (timerBackground != null) timerBackground.SetActive(true);
     }
 
-    // --- HÀM TẠM DỪNG: NẾU VỀ ĐÍCH THÀNH CÔNG THÌ GỌI VÀO ĐÂY ---
     public void StopTimer()
     {
         isTimerRunning = false;
@@ -58,7 +58,6 @@ public class MissionTimer : MonoBehaviour
     {
         if (timerText != null)
         {
-            // Tự động quy đổi số giây ra định dạng Phút:Giây (Ví dụ 02:30)
             int minutes = Mathf.FloorToInt(timeRemaining / 60);
             int seconds = Mathf.FloorToInt(timeRemaining % 60);
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
@@ -71,8 +70,7 @@ public class MissionTimer : MonoBehaviour
         GameOutro outro = FindFirstObjectByType<GameOutro>();
         if (outro != null)
         {
-            // Đổi TriggerOutro thành StartFinalExit
-            outro.StartFinalExit("NHIỆM VỤ THẤT BẠI!\nBẠN ĐÃ HẾT THỜI GIAN.");
+            outro.StartFinalExit("NHIỆM VỤ THẤT BẠI!\nBẠN ĐÃ HẾT THỜI GIAN TIẾP TẾ.");
         }
     }
 }
