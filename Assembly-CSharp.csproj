@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\NPC_END\NPCEndInteract.cs" />
     <Compile Include="Assets\Grass And Flowers Pack 1\Example Scene\SimpleTextureDrawing.cs" />
     <Compile Include="Assets\Scripts\NPC\DialogueManager.cs" />
+    <Compile Include="Assets\Scripts\NPC\UIFloatingArrow.cs" />
     <Compile Include="Assets\Scripts\Main_Character\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Audio\ObjectMovementSound.cs" />
     <Compile Include="Assets\Trap\RockFallLock.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Assets\Scripts\MissionTimer.cs" />
     <Compile Include="Assets\Trap\StartAreaBarrier.cs" />
     <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\MFXTK_FPSDisplay.cs" />
+    <Compile Include="Assets\Scripts\NPC\NPCPorter.cs" />
     <Compile Include="Assets\Trap\SpikeTrap.cs" />
     <Compile Include="Assets\Scripts\Main_Character\BookInteraction.cs" />
     <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\FullScreenRendererFeature2VolumeComponent.cs" />
