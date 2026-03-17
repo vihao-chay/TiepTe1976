@@ -28,7 +28,7 @@ public class NPCPorter : MonoBehaviour
     void Update()
     {
         // Kiểm tra xem NPC đã đi tới đích chưa (cách đích dưới 0.5 mét)
-        if (!agent.pathPending && agent.remainingDistance <= 1f)
+        if (!agent.pathPending && agent.remainingDistance <= 0.2f)
         {
             if (dangVacGao)
             {
