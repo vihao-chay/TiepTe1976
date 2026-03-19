@@ -57,6 +57,12 @@ public class CarInteract : MonoBehaviour
         // MỚI 3: Bật cụm nút lái xe lên khi chui vào buồng lái
         if (drivingUI_Group != null) drivingUI_Group.SetActive(true);
 
+        // Bật mũi tên nhiệm vụ trên xe khi đang lái
+        if (QuestManager.Instance != null && QuestManager.Instance.vehicleArrow != null)
+        {
+            QuestManager.Instance.vehicleArrow.SetDrivingState(true);
+        }
+
         // 1. Tàng hình nhân vật chính & tắt camera người
         player.SetActive(false);
         playerCamera.SetActive(false);
@@ -73,6 +79,12 @@ public class CarInteract : MonoBehaviour
 
         // MỚI 4: Giấu cụm nút lái xe đi khi bước xuống đất
         if (drivingUI_Group != null) drivingUI_Group.SetActive(false);
+
+        // Tắt mũi tên nhiệm vụ trên xe khi xuống xe
+        if (QuestManager.Instance != null && QuestManager.Instance.vehicleArrow != null)
+        {
+            QuestManager.Instance.vehicleArrow.SetDrivingState(false);
+        }
 
         // 1. Dịch chuyển người chơi ra cửa xe và hiện lại
         player.transform.position = exitPoint.position;

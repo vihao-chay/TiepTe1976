@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{9BB0B60A-5978-0BFA-A310-E0A6985A65AB}</ProjectGuid>
+    <ProjectGuid>{B6782023-C52D-3DC0-AD35-F1C2F77B79FD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -61,36 +61,29 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.9f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\MVFXTK_Rotator.cs" />
     <Compile Include="Assets\Scripts\Audio\TrapSound.cs" />
     <Compile Include="Assets\Scripts\outro\GameOutro.cs" />
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\MVFXTK_RTToTexture.cs" />
     <Compile Include="Assets\Trap\RollingRock.cs" />
     <Compile Include="Assets\Scripts\Car\UIKeyboardFeedback.cs" />
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\MVFXTK_LiveRenderTexture.cs" />
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\MVFXTK_ProBuilderMaterialReplacer.cs" />
     <Compile Include="Assets\Scripts\NPC\NPCInteract.cs" />
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\MVFXTK_CameraCopyFrom.cs" />
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\FullScreenRendererFeature2Controller.cs" />
+    <Compile Include="Assets\Scripts\Quest\VehicleQuestArrow.cs" />
     <Compile Include="Assets\Scripts\Car\CheckpointTrigger.cs" />
-    <Compile Include="Assets\Mirza\AERO - Volumetric Fog &amp; Mist\Scripts\VolumetricFogController.cs" />
+    <Compile Include="Assets\Scripts\Main_Character\InstructionManager.cs" />
+    <Compile Include="Assets\Scripts\NPC\FloatingArrow.cs" />
     <Compile Include="Assets\Scripts\Car\CarMovement.cs" />
     <Compile Include="Assets\Trap\RockTrigger.cs" />
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\MVFXTK_LightColourMesh.cs" />
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\FullScreenRendererFeature2.cs" />
     <Compile Include="Assets\Scripts\ButtonClickBG.cs" />
     <Compile Include="Assets\Trap\MineTrap.cs" />
     <Compile Include="Assets\Trap\RockTrapTrigger.cs" />
     <Compile Include="Assets\Forst\CTI Runtime Components\CTI Runtime Components URP 14plus\Scripts\CTI_URP_CustomWind.cs" />
+    <Compile Include="Assets\Scripts\NPC\NPCPatrol.cs" />
     <Compile Include="Assets\Scripts\Main_Character\CameraController.cs" />
-    <Compile Include="Assets\Scripts\NPC_END\NPCEndInteract.cs" />
     <Compile Include="Assets\Grass And Flowers Pack 1\Example Scene\SimpleTextureDrawing.cs" />
     <Compile Include="Assets\Scripts\NPC\DialogueManager.cs" />
     <Compile Include="Assets\Scripts\NPC\UIFloatingArrow.cs" />
     <Compile Include="Assets\Scripts\Main_Character\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Audio\ObjectMovementSound.cs" />
     <Compile Include="Assets\Trap\RockFallLock.cs" />
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\MFXTK_SetFPSOnStart.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Trap\FinishCheck.cs" />
     <Compile Include="Assets\Scripts\MainMenuManager.cs" />
@@ -103,11 +96,11 @@
     <Compile Include="Assets\Scripts\Car\CarInteract.cs" />
     <Compile Include="Assets\Scripts\MissionTimer.cs" />
     <Compile Include="Assets\Trap\StartAreaBarrier.cs" />
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\MFXTK_FPSDisplay.cs" />
+    <Compile Include="Assets\Scripts\Quest\QuestUIManager.cs" />
     <Compile Include="Assets\Scripts\NPC\NPCPorter.cs" />
     <Compile Include="Assets\Trap\SpikeTrap.cs" />
+    <Compile Include="Assets\Scripts\Quest\QuestManager.cs" />
     <Compile Include="Assets\Scripts\Main_Character\BookInteraction.cs" />
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\FullScreenRendererFeature2VolumeComponent.cs" />
     <Compile Include="Assets\Scripts\outro\FinishTrigger.cs" />
     <Compile Include="Assets\Trap\CarReset.cs" />
   </ItemGroup>
@@ -130,10 +123,8 @@
     <None Include="Assets\Fonts\Roboto\OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
     <None Include="Assets\WoodsLifestyle\NOTES.txt" />
-    <None Include="Assets\Mirza\AERO - Volumetric Fog &amp; Mist\README.txt" />
     <None Include="Assets\Rainy VFX\Documentation\LICENSE.txt" />
     <None Include="Assets\Forst\CTI Runtime Components\CTI Runtime Components URP 14plus\Known Issues.txt" />
-    <None Include="Assets\Mirza\AERO - Volumetric Fog &amp; Mist\Shaders\Volumetric Fog.hlsl" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
@@ -142,10 +133,8 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
-    <None Include="Assets\Mirza\_VFXToolkit\Shaders\Blur\Blur.hlsl" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\BrokenVector\LowPolyTreePack\README.txt" />
-    <None Include="Assets\Mirza\_VFXToolkit\Shaders\Common.hlsl" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Fonts\Courier_Prime\OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />

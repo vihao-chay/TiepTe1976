@@ -2,13 +2,12 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
-// KẾT CẤU MỚI: Chứa cả Nội dung chữ và File ghi âm
 [System.Serializable]
 public class DialogueLine
 {
     [TextArea(3, 10)]
-    public string sentenceText; // Ô để gõ chữ
-    public AudioClip voiceClip; // Ô để kéo file mp3 vào
+    public string sentenceText;
+    public AudioClip voiceClip;
 }
 
 public class DialogueManager : MonoBehaviour
@@ -20,34 +19,34 @@ public class DialogueManager : MonoBehaviour
     public GameObject acceptButton;
 
     [Header("Âm Thanh Lồng Tiếng")]
-    public AudioSource audioSource; // Kéo component Audio Source vào đây
+    public AudioSource audioSource;
 
     [Header("Cài đặt")]
     public float typingSpeed = 0.04f;
 
-    private DialogueLine[] currentSentences; // Đã đổi sang mảng kiểu mới
+    private DialogueLine[] currentSentences;
     private int index;
     private bool isTyping = false;
     private Coroutine typingCoroutine;
 
-    // Các biến lưu trữ
     private GameObject gameplayCamera;
     private GameObject currentDialogueCamera;
     private GameObject currentPlayer;
-    private NPCInteract currentNPC; // Thêm dòng này để ghi nhớ NPC
+    private NPCInteract currentNPC;
 
     void Start()
     {
-        dialoguePanel.SetActive(false);
-        acceptButton.SetActive(false);
-        gameplayCamera = Camera.main.gameObject;
+        if (dialoguePanel != null) dialoguePanel.SetActive(false);
+        if (acceptButton != null) acceptButton.SetActive(false);
+
+        if (Camera.main != null)
+            gameplayCamera = Camera.main.gameObject;
     }
 
     void Update()
     {
-        if (dialoguePanel.activeSelf)
+        if (dialoguePanel != null && dialoguePanel.activeSelf)
         {
-            // Bấm Space hoặc Chuột trái để qua câu nhanh
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
             {
                 if (isTyping)
@@ -56,7 +55,6 @@ public class DialogueManager : MonoBehaviour
                     dialogueText.text = currentSentences[index].sentenceText;
                     isTyping = false;
 
-                    // MỚI: Nếu người chơi bấm tua nhanh, tắt tiếng ngay để không bị ồn
                     if (audioSource != null) audioSource.Stop();
                 }
                 else
@@ -69,27 +67,33 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(string npcName, DialogueLine[] sentences, GameObject npcCamera, GameObject player, NPCInteract npc)
     {
-        currentNPC = npc; // Lưu lại anh NPC đang giao tiếp
+        if (sentences == null || sentences.Length == 0)
+        {
+            Debug.LogWarning($"[{npcName}] không có câu thoại.");
+            return;
+        }
+
+        currentNPC = npc;
 
         nameText.text = npcName;
         currentSentences = sentences;
         index = 0;
+        dialogueText.text = "";
 
         dialoguePanel.SetActive(true);
         acceptButton.SetActive(false);
 
-        // Đổi máy quay
         currentDialogueCamera = npcCamera;
         if (gameplayCamera != null) gameplayCamera.SetActive(false);
         if (currentDialogueCamera != null) currentDialogueCamera.SetActive(true);
 
-        // Tàng hình nhân vật chính
         currentPlayer = player;
         if (currentPlayer != null) currentPlayer.SetActive(false);
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
+        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
         typingCoroutine = StartCoroutine(TypeLine());
     }
 
@@ -98,11 +102,10 @@ public class DialogueManager : MonoBehaviour
         isTyping = true;
         dialogueText.text = "";
 
-        // MỚI: XỬ LÝ PHÁT ÂM THANH
         if (audioSource != null)
         {
-            audioSource.Stop(); // Dừng tiếng câu trước (nếu đang nói dở)
-            if (currentSentences[index].voiceClip != null) // Nếu bạn có kéo mp3 vào
+            audioSource.Stop();
+            if (currentSentences[index].voiceClip != null)
             {
                 audioSource.clip = currentSentences[index].voiceClip;
                 audioSource.Play();
@@ -114,11 +117,15 @@ public class DialogueManager : MonoBehaviour
             dialogueText.text += c;
             yield return new WaitForSeconds(typingSpeed);
         }
+
         isTyping = false;
     }
 
     void NextSentence()
     {
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
         if (index < currentSentences.Length - 1)
         {
             index++;
@@ -132,7 +139,6 @@ public class DialogueManager : MonoBehaviour
 
     public void AcceptQuest()
     {
-        // MỚI: Báo cho NPC biết là đã nhận lệnh xong để tắt mũi tên
         if (currentNPC != null)
         {
             currentNPC.CompleteInteraction();
@@ -140,15 +146,17 @@ public class DialogueManager : MonoBehaviour
 
         dialoguePanel.SetActive(false);
 
-        // Tắt tiếng khi đóng bảng thoại
-        if (audioSource != null) audioSource.Stop();
+        if (audioSource != null)
+            audioSource.Stop();
 
-        // Trả lại máy quay
-        if (currentDialogueCamera != null) currentDialogueCamera.SetActive(false);
-        if (gameplayCamera != null) gameplayCamera.SetActive(true);
+        if (currentDialogueCamera != null)
+            currentDialogueCamera.SetActive(false);
 
-        // Hiện lại nhân vật chính
-        if (currentPlayer != null) currentPlayer.SetActive(true);
+        if (gameplayCamera != null)
+            gameplayCamera.SetActive(true);
+
+        if (currentPlayer != null)
+            currentPlayer.SetActive(true);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

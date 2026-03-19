@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{09B28E4F-D079-7DAF-133B-5956A055A09E}</ProjectGuid>
+    <ProjectGuid>{7CA3C3F7-912F-8889-665D-D491B35E6F76}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
@@ -65,7 +65,7 @@
     <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
     <Compile Include="Assets\Forst\CTI Runtime Components\CTI Runtime Components URP 14plus\Scripts\Editor\CTI_URP_ShaderGUI.cs" />
     <Compile Include="Assets\Forst\CTI Runtime Components\CTI Runtime Components URP 14plus\Scripts\Editor\CTI_URPTransDrawer.cs" />
-    <Compile Include="Assets\Mirza\_VFXToolkit\Scripts\Editor\MVFXTK_LiveRenderTextureEditor.cs" />
+    <Compile Include="Assets\Forst\Conifers [BOTD]\Installer\Editor\ConifersInstaller.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -1435,7 +1435,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{9BB0B60A-5978-0BFA-A310-E0A6985A65AB}</Project>
+      <Project>{B6782023-C52D-3DC0-AD35-F1C2F77B79FD}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
   </ItemGroup>
