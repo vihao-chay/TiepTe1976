@@ -75,6 +75,14 @@ public class DialogueManager : MonoBehaviour
 
         currentNPC = npc;
 
+        // --- MỚI: Tắt tiếng môi trường khi bắt đầu nói chuyện (Ấn F) ---
+        AudioListener.pause = true;
+        if (audioSource != null)
+        {
+            audioSource.ignoreListenerPause = true; // Cho phép loa NPC vẫn phát tiếng
+        }
+        // ---------------------------------------------------------------
+
         nameText.text = npcName;
         currentSentences = sentences;
         index = 0;
@@ -143,6 +151,10 @@ public class DialogueManager : MonoBehaviour
         {
             currentNPC.CompleteInteraction();
         }
+
+        // --- MỚI: Mở lại tiếng môi trường khi kết thúc nói chuyện ---
+        AudioListener.pause = false;
+        // ------------------------------------------------------------
 
         dialoguePanel.SetActive(false);
 
